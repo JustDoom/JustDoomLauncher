@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="14.0" layoutY="13.0" prefHeight="375.0" prefWidth="200.0">
+         <content>
+            <VBox fx:id="projects" prefHeight="372.0" prefWidth="198.0" />
+         </content></ScrollPane>
+      <Label layoutX="259.0" layoutY="6.0" text="JustDoom Launcher">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Label>
+      <Pane fx:id="projectFront" layoutX="229.0" layoutY="55.0" prefHeight="329.0" prefWidth="355.0">
+         <children>
+            <Label fx:id="projectName" layoutX="54.0" layoutY="14.0" text="null" />
+            <Label fx:id="projectVersion" layoutX="54.0" layoutY="31.0" text="null" />
+            <TextArea fx:id="projectDescription" editable="false" layoutX="8.0" layoutY="76.0" prefHeight="247.0" prefWidth="339.0" />
+            <ImageView fx:id="projectLogo" fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="15.0" pickOnBounds="true" />
+            <Button fx:id="projectButton" layoutX="279.0" layoutY="7.0" mnemonicParsing="false" text="Install" />
+            <Button fx:id="projectUninstall" layoutX="279.0" layoutY="40.0" mnemonicParsing="false" text="Uninstall" />
+         </children>
+      </Pane>
+      <ProgressBar fx:id="download" layoutX="300.0" layoutY="379.0" prefWidth="200.0" progress="0.0" />
+      <Label fx:id="percentage" layoutX="259.0" layoutY="375.0" text="0%" />
+   </children>
+</Pane>
