@@ -101,18 +101,19 @@ public class LauncherApplication extends Application {
         this.selectedProject = 1;
         loadProjectInfo(JustDoomLauncher.INSTANCE.getProjects().get(1));
 
-        boolean uptoDate = JustDoomLauncher.INSTANCE.checkLauncherUptoDate();
-        System.out.println("Launcher upto date: " + uptoDate);
-        if(!uptoDate) {
-            Platform.runLater(() -> {
-                UpdateApplication updateApplication = new UpdateApplication();
-                try {
-                    updateApplication.start();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
+        new Thread(() -> {
+            boolean uptoDate = JustDoomLauncher.INSTANCE.checkLauncherUptoDate();
+            if (!uptoDate) {
+                Platform.runLater(() -> {
+                    UpdateApplication updateApplication = new UpdateApplication();
+                    try {
+                        updateApplication.start();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+        }).start();
     }
 
     public void onProjectClicked(MouseEvent event) {

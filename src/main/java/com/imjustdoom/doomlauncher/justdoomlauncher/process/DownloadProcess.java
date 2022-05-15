@@ -2,12 +2,8 @@ package com.imjustdoom.doomlauncher.justdoomlauncher.process;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.InstallApplication;
-import com.imjustdoom.doomlauncher.justdoomlauncher.application.LauncherApplication;
 import javafx.application.Platform;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 
 import java.io.*;
 import java.net.HttpURLConnection;

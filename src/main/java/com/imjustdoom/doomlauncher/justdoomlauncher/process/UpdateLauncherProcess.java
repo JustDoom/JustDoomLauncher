@@ -27,12 +27,11 @@ public class UpdateLauncherProcess {
             }
         })).start();
 
-        AutoUpdaterDownloadProcess downloadProcess = new AutoUpdaterDownloadProcess(Settings.LATEST_DOWNLOAD, JustDoomLauncher.INSTANCE.getFiles().getMainFilePath() + "\\JustDoomLauncher-1.0-SNAPSHOT.jar");
+        AutoUpdaterDownloadProcess downloadProcess = new AutoUpdaterDownloadProcess(Settings.LATEST_DOWNLOAD
+                + JustDoomLauncher.INSTANCE.getLatestVersion() + "/launcher.jar", JustDoomLauncher.INSTANCE.getFiles().getMainFilePath() + "\\JustDoomLauncher-1.0-SNAPSHOT.jar");
         new Thread(downloadProcess::run).start();
 
-        System.out.println(downloadProcess.getDownloadState());
         while (downloadProcess.getCurrentProgress() < 1.0) {
-            System.out.println(downloadProcess.getCurrentProgress());
             Platform.runLater(() -> installApplication.update(downloadProcess.getCurrentProgress()));
             try {
                 Thread.sleep(1);
@@ -41,13 +40,9 @@ public class UpdateLauncherProcess {
             }
         }
 
-        System.out.println(0);
-
         Platform.runLater(installApplication::close);
-        System.out.println(1);
         new Thread(() -> Platform.runLater(() -> {
             try {
-                System.out.println(2);
                 restartApplication.start();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class AutoUpdaterDownloadProcess implements Runnable {
 
@@ -34,7 +35,10 @@ public class AutoUpdaterDownloadProcess implements Runnable {
         try {
 
             URL url = new URL(downloadUrl);
-            HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(false);
+            HttpURLConnection httpConnection = (HttpURLConnection) (connection);
+            httpConnection.setUseCaches(false);
             long completeFileSize = httpConnection.getContentLength();
 
             BufferedInputStream in = new BufferedInputStream(httpConnection.getInputStream());

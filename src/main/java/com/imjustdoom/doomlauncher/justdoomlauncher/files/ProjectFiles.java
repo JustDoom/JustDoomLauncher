@@ -103,12 +103,13 @@ public class ProjectFiles {
         jsonElement.getAsJsonObject().addProperty("version", project.getVersion());
         jsonElement.getAsJsonObject().addProperty("description", project.getDescription());
         jsonElement.getAsJsonObject().addProperty("author", project.getAuthor());
-        jsonElement.getAsJsonObject().addProperty("startup", "java -jar %file%");
-        /* for compiling with packr
-         jsonElement.getAsJsonObject().addProperty("startup", "\""
-                + JustDoomLauncher .INSTANCE.getFiles().getMainFilePath()
-                + "\\jre\\bin\\java.exe\" -jar %file%");
-         */
+        if(new File(JustDoomLauncher.INSTANCE.getFiles().mainFilePath + "\\jre\\bin\\java.exe").exists()) {
+            jsonElement.getAsJsonObject().addProperty("startup", "\""
+                    + JustDoomLauncher .INSTANCE.getFiles().getMainFilePath()
+                    + "\\jre\\bin\\java.exe\" -jar %file%");
+        } else {
+            jsonElement.getAsJsonObject().addProperty("startup", "java -jar %file%");
+        }
 
         Writer writer = new FileWriter(path + "/data.json");
         new Gson().toJson(jsonElement, writer);

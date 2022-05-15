@@ -12,8 +12,10 @@ import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
 import javafx.application.Application;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -68,20 +70,29 @@ public class JustDoomLauncher {
     }
 
     public boolean checkLauncherUptoDate() {
+        String latestVersion = getLatestVersion();
+        return latestVersion == null || latestVersion.equals(Settings.VERSION);
+    }
+
+    public String getLatestVersion() {
         try {
-            URI uri = new URI(Settings.LAUNCHER_JSON_ONLINE);
-            InputStream inputStream = uri.toURL().openStream();
+            URL uri = new URL(Settings.LAUNCHER_JSON_ONLINE);
+            uri.openConnection().setUseCaches(false);
+            // Clear the cache for this connection so that the latest version is downloaded
+
+            InputStream inputStream = uri.openStream();
 
             JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
             reader.setLenient(true);
             JsonObject jsonElement = new JsonParser().parse(reader).getAsJsonObject();
 
-            return jsonElement.get("version").getAsString().equals(Settings.VERSION);
+            System.out.println(jsonElement.get("version").getAsString());
+            return jsonElement.get("version").getAsString();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException {

@@ -92,6 +92,7 @@ public class GameProcess {
                 System.out.println(line);
                 stringBuilder.append(line).append("\n");
             }
+            if(stringBuilder.toString().equals("")) return;
             error(stringBuilder.toString());
         }
     }
