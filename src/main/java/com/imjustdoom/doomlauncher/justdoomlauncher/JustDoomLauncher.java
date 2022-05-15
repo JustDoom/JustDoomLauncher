@@ -3,6 +3,7 @@ package com.imjustdoom.doomlauncher.justdoomlauncher;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import com.imjustdoom.autoupdater.AutoUpdaterAPI;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.LauncherApplication;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.ProjectFiles;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
@@ -34,6 +35,7 @@ public class JustDoomLauncher {
     private final ProjectFiles files;
 
     public JustDoomLauncher(String[] args) throws URISyntaxException, IOException {
+
         INSTANCE = this;
 
         this.files = new ProjectFiles(Path.of(new File(JustDoomLauncher.class.getProtectionDomain().getCodeSource().getLocation()

@@ -24,6 +24,7 @@
             <ImageView fx:id="projectLogo" fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="15.0" pickOnBounds="true" />
             <Button fx:id="projectButton" layoutX="279.0" layoutY="7.0" mnemonicParsing="false" text="Install" />
             <Button fx:id="projectUninstall" layoutX="279.0" layoutY="40.0" mnemonicParsing="false" text="Uninstall" />
+            <Button fx:id="backups" layoutX="205.0" layoutY="40.0" mnemonicParsing="false" text="Backups" />
          </children>
       </Pane>
    </children>
