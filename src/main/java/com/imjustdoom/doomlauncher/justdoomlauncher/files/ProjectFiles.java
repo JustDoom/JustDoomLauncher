@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
+import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -17,17 +18,21 @@ import java.util.Comparator;
 public class ProjectFiles {
 
     private final Path filePath;
-    private Path launcherFilePath;
+    private Path launcherFilePath, mainFilePath;
 
     public ProjectFiles(Path filePath) {
         this.filePath = Path.of(filePath.getParent() + "/JustDoomLauncherFiles");
+        this.mainFilePath = filePath.getParent();
     }
 
-    public void init() {
+    public void init() throws IOException {
+
+        // Create launcher files directory
         if (!filePath.toFile().exists()) {
             filePath.toFile().mkdirs();
         }
 
+        // Create launcher files directory
         launcherFilePath = Path.of(filePath + "/launcher");
         if (!Files.exists(launcherFilePath)) {
             try {
@@ -42,9 +47,40 @@ public class ProjectFiles {
                 e.printStackTrace();
             }
         }
+
+        // Create backup directory
+        Path projectsFilePath = Path.of(filePath + "/backup");
+        if (!Files.exists(projectsFilePath)) {
+            try {
+                Files.createDirectory(projectsFilePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Create launcher info json file
+        Path data = Path.of(filePath + "/launcher/launcher.json");
+        if (!Files.exists(data)) {
+            System.out.printf("Could not find %s, generating it for you...\n", "launcher.json");
+            InputStream stream = JustDoomLauncher.class.getResourceAsStream("/assets/" + "data.json");
+            assert stream != null;
+            Files.copy(stream, Path.of(filePath + "/launcher/launcher.json"));
+        }
+
+        JsonReader reader = new JsonReader(Files.newBufferedReader(new File(filePath + "/launcher/launcher.json").toPath()));
+        reader.setLenient(true);
+        JsonObject jsonElement = new JsonParser().parse(reader).getAsJsonObject();
+
+        jsonElement.getAsJsonObject().addProperty("version", Settings.VERSION);
+
+        Writer writer = new FileWriter(filePath + "/launcher/launcher.json");
+        new Gson().toJson(jsonElement, writer);
+        writer.flush();
+        writer.close();
     }
 
     public void createDirectory(String directory, Project project) throws IOException {
+
         Path path = Paths.get(filePath.toString(), directory);
         if (!path.toFile().exists()) {
             path.toFile().mkdirs();
@@ -68,6 +104,11 @@ public class ProjectFiles {
         jsonElement.getAsJsonObject().addProperty("description", project.getDescription());
         jsonElement.getAsJsonObject().addProperty("author", project.getAuthor());
         jsonElement.getAsJsonObject().addProperty("startup", "java -jar %file%");
+        /* for compiling with packr
+         jsonElement.getAsJsonObject().addProperty("startup", "\""
+                + JustDoomLauncher .INSTANCE.getFiles().getMainFilePath()
+                + "\\jre\\bin\\java.exe\" -jar %file%");
+         */
 
         Writer writer = new FileWriter(path + "/data.json");
         new Gson().toJson(jsonElement, writer);
@@ -93,6 +134,10 @@ public class ProjectFiles {
 
     public Path getFilePath() {
         return filePath;
+    }
+
+    public Path getMainFilePath() {
+        return mainFilePath;
     }
 
     public Path getLauncherFilePath() {

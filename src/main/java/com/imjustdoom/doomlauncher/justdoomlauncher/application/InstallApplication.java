@@ -15,12 +15,13 @@ public class InstallApplication {
     private ProgressBar progressBar;
     private Label percentage;
 
-    public InstallApplication() {
+    private FXMLLoader fxmlLoader;
 
+    public InstallApplication() {
+        this.fxmlLoader = new FXMLLoader(JustDoomLauncher.class.getResource("install-view.fxml"));
     }
 
     public void start() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(JustDoomLauncher.class.getResource("install-view.fxml"));
 
         Stage stage = new Stage();
         stage.setTitle("Installing...");
@@ -32,8 +33,7 @@ public class InstallApplication {
         stage.show();
 
         stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                stage.setMaximized(false);
+            if (newValue) stage.setMaximized(false);
         });
 
         this.percentage = (Label) scene.lookup("#percentage");

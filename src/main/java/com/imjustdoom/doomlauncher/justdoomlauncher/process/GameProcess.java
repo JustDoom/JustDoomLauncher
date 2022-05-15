@@ -1,5 +1,8 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.process;
 
+import com.imjustdoom.doomlauncher.justdoomlauncher.application.ErrorApplication;
+import javafx.application.Platform;
+
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
@@ -25,9 +28,9 @@ public class GameProcess {
             System.out.println(directory);
             System.out.println(startupCommand);
 
-            if(true) {
+            if (true) {
                 builder.command("cmd.exe", "/c", startupCommand);
-            }else {
+            } else {
                 builder.command("sh", "-c", startupCommand);
             }
 
@@ -37,26 +40,24 @@ public class GameProcess {
             InputStream inputStream = process.getInputStream();
             InputStream errorStream = process.getErrorStream();
 
-            printStream(inputStream);
+            //printStream(inputStream);
             printStream(errorStream);
 
             boolean isFinished = process.waitFor(30, TimeUnit.SECONDS);
             outputStream.flush();
             outputStream.close();
 
-            if(!isFinished) {
+            if (!isFinished) {
                 process.destroyForcibly();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            error(e.getMessage());
         }
     }
 
     public void kill() {
-        process.children().forEach((p) -> {
-            p.destroyForcibly();
-            System.out.println(p.info());
-        });
+        process.children().forEach(ProcessHandle::destroyForcibly);
         System.out.println(process.info());
         process.destroyForcibly();
     }
@@ -69,12 +70,29 @@ public class GameProcess {
         return startupCommand;
     }
 
-    private static void printStream(InputStream inputStream) throws IOException {
-        try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+    public void error(String error) {
+        Platform.runLater(() -> {
+            ErrorApplication errorApplication = new ErrorApplication();
+            try {
+                errorApplication.start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+            errorApplication.setError(error);
+        });
+
+        kill();
+    }
+
+    private void printStream(InputStream inputStream) throws IOException {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+                stringBuilder.append(line).append("\n");
+            }
+            error(stringBuilder.toString());
         }
     }
 }

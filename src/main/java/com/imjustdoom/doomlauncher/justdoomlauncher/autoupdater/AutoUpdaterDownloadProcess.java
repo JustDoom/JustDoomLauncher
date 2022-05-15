@@ -1,0 +1,64 @@
+package com.imjustdoom.doomlauncher.justdoomlauncher.autoupdater;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class AutoUpdaterDownloadProcess implements Runnable {
+
+    private String downloadUrl;
+    private String path;
+    private double currentProgress = 0.0;
+    private DownloadState state = DownloadState.PAUSED;
+
+    public AutoUpdaterDownloadProcess(String url, String path) {
+        this.downloadUrl = url;
+        this.path = path;
+    }
+
+    public double getCurrentProgress() {
+        return currentProgress;
+    }
+
+    public DownloadState getDownloadState() {
+        return state;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Download process started");
+
+        try {
+
+            URL url = new URL(downloadUrl);
+            HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+            long completeFileSize = httpConnection.getContentLength();
+
+            BufferedInputStream in = new BufferedInputStream(httpConnection.getInputStream());
+            FileOutputStream fos = new FileOutputStream(path);
+            BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+
+            byte[] data = new byte[1024];
+            int byteContent;
+            int downloaded = 0;
+            state = DownloadState.DOWNLOADING;
+            while ((byteContent = in.read(data, 0, 1024)) != -1) {
+                downloaded += byteContent;
+
+                currentProgress = ((((double) downloaded) / ((double) completeFileSize)));
+
+                bout.write(data, 0, byteContent);
+            }
+            bout.close();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        state = DownloadState.COMPLETED;
+        System.out.println("Download process finished");
+    }
+}

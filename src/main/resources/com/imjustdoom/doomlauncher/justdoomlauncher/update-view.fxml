@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="55.0" layoutY="14.0" text="Update Available" />
+      <Button fx:id="download" layoutX="36.0" layoutY="50.0" mnemonicParsing="false" text="Download" />
+      <Button fx:id="skip" layoutX="125.0" layoutY="50.0" mnemonicParsing="false" text="Skip" />
+   </children>
+</Pane>

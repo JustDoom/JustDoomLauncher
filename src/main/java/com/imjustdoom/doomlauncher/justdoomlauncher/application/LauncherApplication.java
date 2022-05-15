@@ -4,11 +4,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
+import com.imjustdoom.doomlauncher.justdoomlauncher.process.BackupProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.DownloadProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
+import com.imjustdoom.doomlauncher.justdoomlauncher.process.UpdateLauncherProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.ProjectFront;
+import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,6 +31,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class LauncherApplication extends Application {
 
@@ -42,11 +47,13 @@ public class LauncherApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(JustDoomLauncher.class.getResource("launcher-view.fxml"));
         scene = fxmlLoader.load();
-        stage.setTitle("JustDoom Launcher");
+        stage.setTitle("JustDoom Launcher " + Settings.VERSION);
 
         Scene scene1 = new Scene(scene, 600, 400);
         stage.setScene(scene1);
         stage.show();
+
+        stage.setOnHiding(event -> Platform.runLater(() -> System.exit(0)));
 
         VBox vBox = ((VBox) scene.lookup("#projects"));
         scrollPane = ((ScrollPane) scene.lookup("#scrollPane"));
@@ -93,6 +100,19 @@ public class LauncherApplication extends Application {
 
         this.selectedProject = 1;
         loadProjectInfo(JustDoomLauncher.INSTANCE.getProjects().get(1));
+
+        boolean uptoDate = JustDoomLauncher.INSTANCE.checkLauncherUptoDate();
+        System.out.println("Launcher upto date: " + uptoDate);
+        if(!uptoDate) {
+            Platform.runLater(() -> {
+                UpdateApplication updateApplication = new UpdateApplication();
+                try {
+                    updateApplication.start();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
     }
 
     public void onProjectClicked(MouseEvent event) {
@@ -119,6 +139,7 @@ public class LauncherApplication extends Application {
             }
             GameProcess gameProcess = new GameProcess(project.getJson().get("main").getAsString(),
                     project.getJson().get("startup").getAsString(), project.getDirectory());
+
             JustDoomLauncher.INSTANCE.getGameProcesses().put(project.getId(), gameProcess);
             new Thread(gameProcess::run).start();
         } else {
@@ -151,6 +172,9 @@ public class LauncherApplication extends Application {
 
         if(project.isInstalled()) {
             try {
+                //BackupProcess backupProcess = new BackupProcess(Path.of(project.getDirectory()));
+                //backupProcess.backup();
+
                 if(JustDoomLauncher.INSTANCE.getGameProcesses().containsKey(project.getId())) {
                     JustDoomLauncher.INSTANCE.getGameProcesses().get(project.getId()).kill();
                 }
