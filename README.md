@@ -12,6 +12,7 @@ that I create or for paid games.
 This used my custom API for the projects 
 (https://api.imjustdoom.com/projects). Coming Soon
 
+https://www.mediafire.com/file/jrbt0ccxjjrity3/JustDoomLauncher.rar/file  
 Installation files, it includes the correct version of Java.
 Create a new folder and extract the files there. Then run the
 JustDoomLauncher.exe file. It will ask you to install the latest
