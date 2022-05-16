@@ -1,16 +1,11 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.application;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
-import com.imjustdoom.doomlauncher.justdoomlauncher.process.BackupProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.DownloadProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
-import com.imjustdoom.doomlauncher.justdoomlauncher.process.UpdateLauncherProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.ProjectFront;
-import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.Config;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -23,15 +18,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class LauncherApplication extends Application {
 
@@ -47,7 +37,7 @@ public class LauncherApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(JustDoomLauncher.class.getResource("launcher-view.fxml"));
         scene = fxmlLoader.load();
-        stage.setTitle("JustDoom Launcher " + Settings.VERSION);
+        stage.setTitle("JustDoom Launcher " + Config.VERSION);
 
         Scene scene1 = new Scene(scene, 600, 400);
         stage.setScene(scene1);
@@ -114,6 +104,15 @@ public class LauncherApplication extends Application {
                 });
             }
         }).start();
+
+        ((Button) scene.lookup("#settings")).setOnAction(event -> {
+            LauncherSettingsApplication launcherSettingsApplication = new LauncherSettingsApplication();
+            try {
+                launcherSettingsApplication.start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void onProjectClicked(MouseEvent event) {

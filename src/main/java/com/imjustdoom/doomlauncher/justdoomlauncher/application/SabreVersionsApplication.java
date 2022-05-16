@@ -8,7 +8,6 @@ import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.DownloadProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
-import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
 import com.sun.javafx.scene.control.LabeledText;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -17,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -26,8 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SabreVersionsApplication {
 

@@ -4,9 +4,8 @@ import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.InstallApplication;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.RestartApplication;
 import com.imjustdoom.doomlauncher.justdoomlauncher.autoupdater.AutoUpdaterDownloadProcess;
-import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.Config;
 import javafx.application.Platform;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ public class UpdateLauncherProcess {
             }
         })).start();
 
-        AutoUpdaterDownloadProcess downloadProcess = new AutoUpdaterDownloadProcess(Settings.LATEST_DOWNLOAD
+        AutoUpdaterDownloadProcess downloadProcess = new AutoUpdaterDownloadProcess(Config.LATEST_DOWNLOAD
                 + JustDoomLauncher.INSTANCE.getLatestVersion() + "/launcher.jar", JustDoomLauncher.INSTANCE.getFiles().getMainFilePath() + "\\JustDoomLauncher-1.0-SNAPSHOT.jar");
         new Thread(downloadProcess::run).start();
 

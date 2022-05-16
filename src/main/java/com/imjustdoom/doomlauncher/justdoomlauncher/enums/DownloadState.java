@@ -1,4 +1,4 @@
-package com.imjustdoom.doomlauncher.justdoomlauncher.autoupdater;
+package com.imjustdoom.doomlauncher.justdoomlauncher.enums;
 
 public enum DownloadState {
     DOWNLOADING,

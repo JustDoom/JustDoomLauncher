@@ -1,5 +1,7 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.autoupdater;
 
+import com.imjustdoom.doomlauncher.justdoomlauncher.enums.DownloadState;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;

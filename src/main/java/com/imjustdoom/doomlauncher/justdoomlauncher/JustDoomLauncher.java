@@ -7,7 +7,7 @@ import com.imjustdoom.doomlauncher.justdoomlauncher.application.LauncherApplicat
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.ProjectFiles;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
-import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.Config;
 import javafx.application.Application;
 
 import java.io.File;
@@ -37,6 +37,8 @@ public class JustDoomLauncher {
                 .toURI()).toURI()));
 
         this.files.init();
+
+        Config.init();
 
         projectFronts.put(1, new Project(1, "Falling James", "", "Java", "1.1.1", "JustDoom",
                 "Amazing falling game", new File(this.files.getLauncherFilePath().toString() + "/assets/images/placeholder.png"),
@@ -73,12 +75,12 @@ public class JustDoomLauncher {
 
     public boolean checkLauncherUptoDate() {
         String latestVersion = getLatestVersion();
-        return latestVersion == null || latestVersion.equals(Settings.VERSION);
+        return latestVersion == null || latestVersion.equals(Config.VERSION);
     }
 
     public String getLatestVersion() {
         try {
-            URL uri = new URL(Settings.LAUNCHER_JSON_ONLINE);
+            URL uri = new URL(Config.LAUNCHER_JSON_ONLINE);
             uri.openConnection().setUseCaches(false);
             // Clear the cache for this connection so that the latest version is downloaded
 

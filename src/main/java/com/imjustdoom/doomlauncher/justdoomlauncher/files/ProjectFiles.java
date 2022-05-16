@@ -1,13 +1,11 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.files;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
-import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -19,6 +17,7 @@ public class ProjectFiles {
 
     private final Path filePath;
     private Path launcherFilePath, mainFilePath;
+    private JsonObject launcherFile;
 
     public ProjectFiles(Path filePath) {
         this.filePath = Path.of(filePath.getParent() + "/JustDoomLauncherFiles");
@@ -71,12 +70,19 @@ public class ProjectFiles {
         reader.setLenient(true);
         JsonObject jsonElement = new JsonParser().parse(reader).getAsJsonObject();
 
-        jsonElement.getAsJsonObject().addProperty("version", Settings.VERSION);
+        jsonElement.getAsJsonObject().addProperty("version", Config.VERSION);
+        if(jsonElement.getAsJsonObject().get("settings") == null) {
+            jsonElement.getAsJsonObject().add("settings", new JsonObject());
+        }
+
+        jsonElement.getAsJsonObject().get("settings").getAsJsonObject().addProperty("update", true);
 
         Writer writer = new FileWriter(filePath + "/launcher/launcher.json");
         new Gson().toJson(jsonElement, writer);
         writer.flush();
         writer.close();
+
+        launcherFile = jsonElement;
     }
 
     public void createDirectory(String directory, Project project) throws IOException {
@@ -143,5 +149,9 @@ public class ProjectFiles {
 
     public Path getLauncherFilePath() {
         return launcherFilePath;
+    }
+
+    public JsonObject getLauncherFile() {
+        return launcherFile;
     }
 }
