@@ -148,7 +148,8 @@ public class LauncherApplication extends Application {
             try {
                 if(project.getId() == 2) {
                     SabreVersionsApplication sabreVersionsApplication = new SabreVersionsApplication();
-                    sabreVersionsApplication.start();
+                    sabreVersionsApplication.start(project);
+                    return;
                 }
                 JustDoomLauncher.INSTANCE.getFiles().createDirectory(project.getName(), project);
                 DownloadProcess downloadProcess = new DownloadProcess(project.getDownloadUrl(), project.getDirectory());
