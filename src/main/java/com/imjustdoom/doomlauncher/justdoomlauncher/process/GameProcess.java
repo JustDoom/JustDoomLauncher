@@ -61,7 +61,13 @@ public class GameProcess {
                 }
             })).start();
 
-            console(stdout, consoleApplication);
+            new Thread(() -> {
+                try {
+                    console(stdout, consoleApplication);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
             printStream(stderr, consoleApplication);
 
             boolean isFinished = process.waitFor(30, TimeUnit.SECONDS);
