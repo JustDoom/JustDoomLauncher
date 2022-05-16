@@ -13,8 +13,7 @@ import java.io.IOException;
 public class SabreVersionsApplication {
 
     private Stage stage;
-    private ScrollPane back;
-    private Button create;
+    private Button back;
 
     public SabreVersionsApplication() {
 
@@ -32,7 +31,8 @@ public class SabreVersionsApplication {
         stage.setScene(scene);
         stage.show();
 
-        back = (ScrollPane) scene.lookup("#back");
+        back = (Button) scene.lookup("#back");
+        back.setOnAction(event -> close());
     }
 
     public void close() {

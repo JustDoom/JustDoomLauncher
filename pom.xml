@@ -60,11 +60,6 @@
             <version>2.9.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.uphy</groupId>
-            <artifactId>javafx-console</artifactId>
-            <version>2e41b0d68d</version>
-        </dependency>
     </dependencies>
 
     <build>
