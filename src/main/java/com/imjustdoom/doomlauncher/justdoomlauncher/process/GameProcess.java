@@ -32,8 +32,8 @@ public class GameProcess {
             System.out.println(startupCommand);
 
             if (true) {
-                //builder.command("cmd.exe", "/c", startupCommand);
-                builder.command(startupCommand.split(" "));
+                builder.command("cmd.exe", "/c", startupCommand);
+                //builder.command(startupCommand.split(" "));
             } else {
                 builder.command("sh", "-c", startupCommand);
             }
@@ -55,7 +55,7 @@ public class GameProcess {
             ConsoleApplication consoleApplication = new ConsoleApplication();
             new Thread(() -> Platform.runLater(() -> {
                 try {
-                    consoleApplication.start(stdinWriter);
+                    consoleApplication.start(dataOutputStream);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -68,7 +68,13 @@ public class GameProcess {
                     throw new RuntimeException(e);
                 }
             }).start();
-            printStream(stderr, consoleApplication);
+            try {
+                console(stderr, consoleApplication);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            //printStream(stderr, consoleApplication);
 
             boolean isFinished = process.waitFor(30, TimeUnit.SECONDS);
             stdin.flush();
@@ -128,12 +134,10 @@ public class GameProcess {
 
     private void console(InputStream inputStream, ConsoleApplication application) throws IOException {
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-            StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
-                stringBuilder.append(line).append("\n");
-                application.addText(line + "\n");
+                System.out.println(line.replace(">", ""));
+                application.addText(line.replace("> ", "").replace(">", "") + "\n");
             }
         }
     }
