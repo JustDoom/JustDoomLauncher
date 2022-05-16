@@ -3,28 +3,23 @@ package com.imjustdoom.doomlauncher.justdoomlauncher;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-import com.imjustdoom.autoupdater.AutoUpdaterAPI;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.LauncherApplication;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.ProjectFiles;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
-import com.imjustdoom.doomlauncher.justdoomlauncher.project.ProjectFront;
 import com.imjustdoom.doomlauncher.justdoomlauncher.settings.Settings;
 import javafx.application.Application;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URI;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class JustDoomLauncher {
 
@@ -46,6 +41,11 @@ public class JustDoomLauncher {
         projectFronts.put(1, new Project(1, "Falling James", "", "Java", "1.1.1", "JustDoom",
                 "Amazing falling game", new File(this.files.getLauncherFilePath().toString() + "/assets/images/placeholder.png"),
                 "https://flappyac.com/file.jar"));
+
+        projectFronts.put(2, new Project(2, "Sabre", "", "Java", "1.0.0", "Project-Cepi",
+                "Amazing minestom pre built jar with useful features\nHas a cool config",
+                new File(this.files.getLauncherFilePath().toString() + "/assets/images/placeholder.png"),
+                "https://github.com/Project-Cepi/Sabre/releases/download/latest/sabre-1.0.0-all.jar"));
 
         for (File dir : files.getFilePath().toFile().listFiles()) {
             if (!dir.isDirectory()) continue;

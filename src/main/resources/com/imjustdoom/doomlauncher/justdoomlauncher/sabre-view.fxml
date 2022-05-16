@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="77.0" prefHeight="291.0" prefWidth="572.0">
+        <content>
+          <AnchorPane fx:id="backups" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+      <Label layoutX="169.0" layoutY="14.0" text="Sabre Versions">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="back" layoutX="279.0" layoutY="374.0" mnemonicParsing="false" text="Back" />
+   </children>
+</Pane>

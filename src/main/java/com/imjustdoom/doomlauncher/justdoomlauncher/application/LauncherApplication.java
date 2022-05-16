@@ -138,12 +138,16 @@ public class LauncherApplication extends Application {
                 loadProjectInfo(project);
                 return;
             }
+
             GameProcess gameProcess = new GameProcess(project.getJson().get("main").getAsString(),
-                    project.getJson().get("startup").getAsString(), project.getDirectory());
+                    project.getJson().get("startup").getAsString(), project.getDirectory(), true);
 
             JustDoomLauncher.INSTANCE.getGameProcesses().put(project.getId(), gameProcess);
             new Thread(gameProcess::run).start();
         } else {
+            if(project.getId() == 2) {
+                return;
+            }
             try {
                 JustDoomLauncher.INSTANCE.getFiles().createDirectory(project.getName(), project);
                 DownloadProcess downloadProcess = new DownloadProcess(project.getDownloadUrl(), project.getDirectory());
