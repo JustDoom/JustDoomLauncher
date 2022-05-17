@@ -2,14 +2,11 @@ package com.imjustdoom.doomlauncher.justdoomlauncher.files;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.file.Files;
 
 public class Config {
 
@@ -22,12 +19,14 @@ public class Config {
     public class Settings {
         public static boolean DEBUG = false;
         public static boolean AUTO_UPDATE = true;
+        public static boolean OPEN_CONSOLE = true;
     }
 
     public static void init() {
         JsonObject json = JustDoomLauncher.INSTANCE.getFiles().getLauncherFile();
 
         Settings.AUTO_UPDATE = json.get("settings").getAsJsonObject().get("update").getAsBoolean();
+        Settings.OPEN_CONSOLE = json.get("settings").getAsJsonObject().get("openConsole").getAsBoolean();
     }
 
     public static void saveConfig(JsonObject json) throws IOException {
@@ -37,8 +36,10 @@ public class Config {
         writer.close();
     }
 
-    public static void setSetting(String key, String value, JsonObject json) {
+    public static void setSetting(String key, String value, JsonObject json, boolean save) {
         json.get("settings").getAsJsonObject().addProperty(key, value);
+
+        if(!save) return;
         try {
             saveConfig(json);
         } catch (IOException e) {

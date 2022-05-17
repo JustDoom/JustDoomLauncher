@@ -61,7 +61,7 @@ public class ProjectFiles {
         Path data = Path.of(filePath + "/launcher/launcher.json");
         if (!Files.exists(data)) {
             System.out.printf("Could not find %s, generating it for you...\n", "launcher.json");
-            InputStream stream = JustDoomLauncher.class.getResourceAsStream("/assets/" + "data.json");
+            InputStream stream = JustDoomLauncher.class.getResourceAsStream("/assets/" + "launcher.json");
             assert stream != null;
             Files.copy(stream, Path.of(filePath + "/launcher/launcher.json"));
         }
@@ -75,7 +75,12 @@ public class ProjectFiles {
             jsonElement.getAsJsonObject().add("settings", new JsonObject());
         }
 
-        jsonElement.getAsJsonObject().get("settings").getAsJsonObject().addProperty("update", true);
+        if(!jsonElement.getAsJsonObject("settings").getAsJsonObject().has("update")) {
+            jsonElement.getAsJsonObject().get("settings").getAsJsonObject().addProperty("update", true);
+        }
+        if(!jsonElement.getAsJsonObject("settings").getAsJsonObject().has("openConsole")) {
+            jsonElement.getAsJsonObject().get("settings").getAsJsonObject().addProperty("openConsole", true);
+        }
 
         Writer writer = new FileWriter(filePath + "/launcher/launcher.json");
         new Gson().toJson(jsonElement, writer);
@@ -153,5 +158,9 @@ public class ProjectFiles {
 
     public JsonObject getLauncherFile() {
         return launcherFile;
+    }
+
+    public void setLauncherFile(JsonObject json) {
+        launcherFile = json;
     }
 }

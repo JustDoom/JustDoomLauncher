@@ -53,35 +53,37 @@ public class GameProcess {
             DataOutputStream dataOutputStream = new DataOutputStream(stdin);
 
             ConsoleApplication consoleApplication = new ConsoleApplication();
-            new Thread(() -> Platform.runLater(() -> {
-                try {
-                    consoleApplication.start(dataOutputStream);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            })).start();
+            if(useConsole) {
+                new Thread(() -> Platform.runLater(() -> {
+                    try {
+                        consoleApplication.start(dataOutputStream);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })).start();
 
-            new Thread(() -> {
+                new Thread(() -> {
+                    try {
+                        console(stdout, consoleApplication);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).start();
                 try {
-                    console(stdout, consoleApplication);
+                    console(stderr, consoleApplication);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }).start();
-            try {
-                console(stderr, consoleApplication);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
 
-            //printStream(stderr, consoleApplication);
+                //printStream(stderr, consoleApplication);
 
-            boolean isFinished = process.waitFor(30, TimeUnit.SECONDS);
-            stdin.flush();
-            stdin.close();
+                boolean isFinished = process.waitFor(30, TimeUnit.SECONDS);
+                stdin.flush();
+                stdin.close();
 
-            if (!isFinished) {
-                process.destroyForcibly();
+                if (!isFinished) {
+                    process.destroyForcibly();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

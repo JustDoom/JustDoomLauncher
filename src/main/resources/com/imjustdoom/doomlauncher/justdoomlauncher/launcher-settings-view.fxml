@@ -10,7 +10,9 @@
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Button fx:id="back" layoutX="170.0" layoutY="254.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="back" layoutX="322.0" layoutY="254.0" mnemonicParsing="false" text="Back" />
       <CheckBox fx:id="update" layoutX="14.0" layoutY="62.0" mnemonicParsing="false" text="Automatically check for updates" />
+      <Button fx:id="save" layoutX="271.0" layoutY="254.0" mnemonicParsing="false" text="Save" />
+      <CheckBox fx:id="console" layoutX="14.0" layoutY="85.0" mnemonicParsing="false" text="Open console when running a program" />
    </children>
 </Pane>

@@ -20,6 +20,8 @@ public class LauncherSettingsApplication {
 
     private Parent fxmlLoader;
 
+    private final JsonObject json = JustDoomLauncher.INSTANCE.getFiles().getLauncherFile().deepCopy();
+
     public LauncherSettingsApplication() {
         try {
             this.fxmlLoader = new FXMLLoader(JustDoomLauncher.class.getResource("launcher-settings-view.fxml")).load();
@@ -43,11 +45,25 @@ public class LauncherSettingsApplication {
             close();
         });
 
-        JsonObject json = JustDoomLauncher.INSTANCE.getFiles().getLauncherFile();
         ((CheckBox) scene.lookup("#update")).setSelected(Boolean.parseBoolean(Config.getSetting("update", json)));
         ((CheckBox) scene.lookup("#update")).setOnAction(event -> {
             CheckBox checkBox = (CheckBox) event.getSource();
-            Config.setSetting("update", checkBox.isSelected() ? "true" : "false", json);
+            Config.setSetting("update", checkBox.isSelected() ? "true" : "false", json, false);
+        });
+
+        ((CheckBox) scene.lookup("#console")).setSelected(Boolean.parseBoolean(Config.getSetting("openConsole", json)));
+        ((CheckBox) scene.lookup("#console")).setOnAction(event -> {
+            CheckBox checkBox = (CheckBox) event.getSource();
+            Config.setSetting("openConsole", checkBox.isSelected() ? "true" : "false", json, false);
+        });
+
+        ((Button) scene.lookup("#save")).setOnAction(event -> {
+            try {
+                Config.saveConfig(json);
+                JustDoomLauncher.INSTANCE.getFiles().setLauncherFile(json);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

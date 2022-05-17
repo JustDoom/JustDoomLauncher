@@ -139,7 +139,7 @@ public class LauncherApplication extends Application {
             }
 
             GameProcess gameProcess = new GameProcess(project.getJson().get("main").getAsString(),
-                    project.getJson().get("startup").getAsString(), project.getDirectory(), true);
+                    project.getJson().get("startup").getAsString(), project.getDirectory(), Config.Settings.OPEN_CONSOLE);
 
             JustDoomLauncher.INSTANCE.getGameProcesses().put(project.getId(), gameProcess);
             new Thread(gameProcess::run).start();
