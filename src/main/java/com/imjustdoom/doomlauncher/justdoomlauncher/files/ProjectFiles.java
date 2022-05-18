@@ -67,6 +67,8 @@ public class ProjectFiles {
         launcherJsonSettings.add(new JsonSetting("update", "settings", true, Boolean.class));
         launcherJsonSettings.add(new JsonSetting("openConsole", "settings", true, Boolean.class));
 
+        this.launcherJson = new JsonFile(launcherJsonFile, launcherJsonSettings);
+
         JsonReader reader = null;
         try {
             reader = new JsonReader(new FileReader(launcherJsonFile));
@@ -75,11 +77,18 @@ public class ProjectFiles {
         }
 
         JsonElement parser = new JsonParser().parse(reader);
-        JsonObject jsonObject = parser.isJsonNull() ? new JsonObject() : parser.getAsJsonObject();
 
-        this.launcherJson = new JsonFile(launcherJsonFile, launcherJsonSettings, jsonObject);
-
-        launcherJson.load();
+        if(parser.isJsonNull()) {
+            launcherJson.setJson(new JsonObject());
+            try {
+                launcherJson.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            launcherJson.setJson(parser.getAsJsonObject());
+            launcherJson.load();
+        }
     }
 
     public void createDirectory(String directory, Project project) throws IOException {

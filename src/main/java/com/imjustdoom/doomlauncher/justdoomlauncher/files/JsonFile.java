@@ -16,6 +16,7 @@ public class JsonFile {
     private File file;
     private JsonObject json;
     private List<JsonSetting> settings;
+    private List<JsonSetting> missingSettings = new ArrayList<>();
 
     public JsonFile(File file, List<JsonSetting> settings, JsonObject json) {
         this.file = file;
@@ -53,46 +54,91 @@ public class JsonFile {
     public void save() throws IOException {
         Writer writer = new FileWriter(file);
 
-        JsonObject baseJson = new JsonObject();
-        for (JsonSetting setting : this.settings) {
-            JsonObject json = baseJson;
+        JsonObject json = this.json.deepCopy();
+        for(JsonSetting setting : this.settings) {
 
+            JsonObject tmpJson = json;
             for (String elmt : setting.getPath().split("\\.")) {
-                if (elmt == null || elmt.equals("")) continue;
-                if (!json.has(elmt)) {
-                    json.add(elmt, new JsonObject());
+                if(elmt == null || elmt.equals("")) continue;
+                if(tmpJson.has(elmt)) tmpJson = tmpJson.get(elmt).getAsJsonObject();
+                else {
+                    tmpJson.add(elmt, new JsonObject());
+                    tmpJson = tmpJson.get(elmt).getAsJsonObject();
                 }
-                json = json.get(elmt).getAsJsonObject();
             }
 
-            if (json.get(setting.getKey()) == null || setting.isOverride() || setting.isUpdated()) {
-                if (setting.isBoolean()) json.addProperty(setting.getKey(), (Boolean) setting.getValue());
-                else if (setting.isInteger()) json.addProperty(setting.getKey(), (Integer) setting.getValue());
-                else if (setting.isString()) json.addProperty(setting.getKey(), (String) setting.getValue());
-                setting.setUpdated(false);
-            }
+            // Set the value
+            if (setting.isBoolean()) tmpJson.addProperty(setting.getKey(), (Boolean) setting.getValue());
+            else if (setting.isInteger()) tmpJson.addProperty(setting.getKey(), (Integer) setting.getValue());
+            else if (setting.isString()) tmpJson.addProperty(setting.getKey(), (String) setting.getValue());
         }
 
-        this.json = baseJson;
-        new Gson().toJson(baseJson, writer);
+        new Gson().toJson(json, writer);
         writer.flush();
         writer.close();
     }
 
     public void load() {
+        JsonObject json = this.json.deepCopy();
+
+        SETTINGS:
         for (JsonSetting setting : this.settings) {
 
+            JsonObject tmpJson = json.deepCopy();
             for (String elmt : setting.getPath().split("\\.")) {
-                if (elmt == null || elmt.equals("")) continue;
-                if (!json.has(elmt)) continue;
-                json = json.get(elmt).getAsJsonObject();
+                if(elmt == null || elmt.equals("")) continue;
+                if(tmpJson.has(elmt)) tmpJson = tmpJson.get(elmt).getAsJsonObject();
+                else {
+                    missingSettings.add(setting);
+                    continue SETTINGS;
+                }
             }
 
-            if (json.get(setting.getKey()) != null) {
-                if (setting.isBoolean()) setting.setValue(json.get(setting.getKey()).getAsBoolean());
-                else if (setting.isInteger()) setting.setValue(json.get(setting.getKey()).getAsInt());
-                else if (setting.isString()) setting.setValue(json.get(setting.getKey()).getAsString());
+            if(tmpJson.get(setting.getKey()) == null) {
+                missingSettings.add(setting);
+                continue;
             }
+
+            if (setting.isBoolean()) setting.setValue(tmpJson.get(setting.getKey()).getAsBoolean());
+            else if (setting.isInteger()) setting.setValue(tmpJson.get(setting.getKey()).getAsInt());
+            else if (setting.isString()) setting.setValue(tmpJson.get(setting.getKey()).getAsString());
         }
+
+        try {
+            Writer writer = new FileWriter(file);
+
+            // Add missing settings
+            for (JsonSetting setting : missingSettings) {
+
+                JsonObject tmpJson = json;
+                for (String elmt : setting.getPath().split("\\.")) {
+                    if (elmt == null || elmt.equals("")) continue;
+                    if (tmpJson.has(elmt)) tmpJson = tmpJson.get(elmt).getAsJsonObject();
+                    else {
+                        tmpJson.add(elmt, new JsonObject());
+                        tmpJson = tmpJson.get(elmt).getAsJsonObject();
+                    }
+                }
+
+                // Set the value
+                if (setting.isBoolean()) tmpJson.addProperty(setting.getKey(), (Boolean) setting.getValue());
+                else if (setting.isInteger()) tmpJson.addProperty(setting.getKey(), (Integer) setting.getValue());
+                else if (setting.isString()) tmpJson.addProperty(setting.getKey(), (String) setting.getValue());
+            }
+
+            new Gson().toJson(json, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setJson(JsonObject json) {
+        this.json = json;
+    }
+
+    public JsonObject getJson() {
+        return json;
     }
 }
