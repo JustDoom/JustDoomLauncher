@@ -1,5 +1,6 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.process;
 
+import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.ConsoleApplication;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.ErrorApplication;
 import javafx.application.Platform;
@@ -53,7 +54,7 @@ public class GameProcess {
             DataOutputStream dataOutputStream = new DataOutputStream(stdin);
 
             ConsoleApplication consoleApplication = new ConsoleApplication();
-            if(useConsole) {
+            if(JustDoomLauncher.INSTANCE.getFiles().getLauncherFile().getSetting("openConsole").getAsBoolean()) {
                 new Thread(() -> Platform.runLater(() -> {
                     try {
                         consoleApplication.start(dataOutputStream);

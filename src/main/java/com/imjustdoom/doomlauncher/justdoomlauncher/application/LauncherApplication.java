@@ -92,6 +92,7 @@ public class LauncherApplication extends Application {
         loadProjectInfo(JustDoomLauncher.INSTANCE.getProjects().get(1));
 
         new Thread(() -> {
+            if(!JustDoomLauncher.INSTANCE.getFiles().getLauncherFile().getSetting("update").getAsBoolean()) return;
             boolean uptoDate = JustDoomLauncher.INSTANCE.checkLauncherUptoDate();
             if (!uptoDate) {
                 Platform.runLater(() -> {

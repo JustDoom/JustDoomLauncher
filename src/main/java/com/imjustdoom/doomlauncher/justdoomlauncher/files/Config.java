@@ -23,10 +23,11 @@ public class Config {
     }
 
     public static void init() {
-        JsonObject json = JustDoomLauncher.INSTANCE.getFiles().getLauncherFile();
+        JsonFile json = JustDoomLauncher.INSTANCE.getFiles().getLauncherFile();
 
-        Settings.AUTO_UPDATE = json.get("settings").getAsJsonObject().get("update").getAsBoolean();
-        Settings.OPEN_CONSOLE = json.get("settings").getAsJsonObject().get("openConsole").getAsBoolean();
+        System.out.println(json == null);
+        Settings.AUTO_UPDATE = json.getSetting("update").getAsBoolean();
+        Settings.OPEN_CONSOLE = json.getSetting("openConsole").getAsBoolean();
     }
 
     public static void saveConfig(JsonObject json) throws IOException {
@@ -45,9 +46,5 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static String getSetting(String key, JsonObject json) {
-        return json.get("settings").getAsJsonObject().get(key).getAsString();
     }
 }
