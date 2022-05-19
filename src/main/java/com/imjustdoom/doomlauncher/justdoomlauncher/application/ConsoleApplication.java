@@ -18,7 +18,7 @@ public class ConsoleApplication {
     private TextArea console;
     private TextField textField;
 
-    public final void start(OutputStream stdinWriter) throws Exception {
+    public final void start(OutputStream stdin) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(JustDoomLauncher.class.getResource("console-view.fxml"));
 
         this.stage = new Stage();
@@ -38,9 +38,9 @@ public class ConsoleApplication {
             if (event.getCode() == KeyCode.ENTER) {
                 addText(textField.getText() + "\n");
                 try {
-                    stdinWriter.write(textField.getText().getBytes());
-                    stdinWriter.write("\n".getBytes());
-                    stdinWriter.flush();
+                    stdin.write(textField.getText().getBytes());
+                    stdin.write(System.lineSeparator().getBytes());
+                    stdin.flush();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

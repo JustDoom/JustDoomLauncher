@@ -10,12 +10,6 @@ import java.io.Writer;
 
 public class Config {
 
-    // Load settings from launcher.json
-
-    public static String VERSION = "1.0.7 (INDEV)";
-    public static String LAUNCHER_JSON_ONLINE = "https://flappyac.com/launcher.json";
-    public static String LATEST_DOWNLOAD = "https://flappyac.com/launcher/";
-
     public class Settings {
         public static boolean DEBUG = false;
         public static boolean AUTO_UPDATE = true;

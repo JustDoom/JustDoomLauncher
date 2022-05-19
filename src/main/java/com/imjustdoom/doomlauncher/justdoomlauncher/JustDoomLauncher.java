@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.LauncherApplication;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.ConstantSettings;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.ProjectFiles;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
@@ -33,13 +34,13 @@ public class JustDoomLauncher {
 
         INSTANCE = this;
 
-        this.files = new ProjectFiles(Path.of(new File(JustDoomLauncher.class.getProtectionDomain().getCodeSource().getLocation()
-                .toURI()).toURI()));
-
+        // Load/Create requires files/file handlers
+        this.files = new ProjectFiles(Path.of(new File(JustDoomLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toURI()));
         this.files.init();
 
         Config.init();
 
+        // Add projects
         projectFronts.put(1, new Project(1, "Falling James", "", "Java", "1.1.1", "JustDoom",
                 "Amazing falling game", new File(this.files.getLauncherFilePath().toString() + "/assets/images/placeholder.png"),
                 "https://flappyac.com/file.jar"));
@@ -49,6 +50,7 @@ public class JustDoomLauncher {
                 new File(this.files.getLauncherFilePath().toString() + "/assets/images/placeholder.png"),
                 "https://github.com/Project-Cepi/Sabre/releases/download/latest/sabre-1.0.0-all.jar"));
 
+        // Load projects from files
         for (File dir : files.getFilePath().toFile().listFiles()) {
             if (!dir.isDirectory()) continue;
 
@@ -75,12 +77,12 @@ public class JustDoomLauncher {
 
     public boolean checkLauncherUptoDate() {
         String latestVersion = getLatestVersion();
-        return latestVersion == null || latestVersion.equals(Config.VERSION);
+        return latestVersion == null || latestVersion.equals(ConstantSettings.VERSION);
     }
 
     public String getLatestVersion() {
         try {
-            URL uri = new URL(Config.LAUNCHER_JSON_ONLINE);
+            URL uri = new URL(ConstantSettings.LAUNCHER_VERSION_JSON);
             uri.openConnection().setUseCaches(false);
             // Clear the cache for this connection so that the latest version is downloaded
 
@@ -90,7 +92,6 @@ public class JustDoomLauncher {
             reader.setLenient(true);
             JsonObject jsonElement = new JsonParser().parse(reader).getAsJsonObject();
 
-            System.out.println(jsonElement.get("version").getAsString());
             return jsonElement.get("version").getAsString();
         } catch (Exception e) {
             e.printStackTrace();

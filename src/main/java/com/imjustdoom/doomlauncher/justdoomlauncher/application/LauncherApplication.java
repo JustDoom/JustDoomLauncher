@@ -1,6 +1,7 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.application;
 
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.ConstantSettings;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.DownloadProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
@@ -37,7 +38,7 @@ public class LauncherApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(JustDoomLauncher.class.getResource("launcher-view.fxml"));
         scene = fxmlLoader.load();
-        stage.setTitle("JustDoom Launcher " + Config.VERSION);
+        stage.setTitle("JustDoom Launcher " + ConstantSettings.VERSION);
 
         Scene scene1 = new Scene(scene, 600, 400);
         stage.setScene(scene1);

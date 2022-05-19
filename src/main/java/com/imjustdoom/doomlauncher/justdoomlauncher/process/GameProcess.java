@@ -45,8 +45,6 @@ public class GameProcess {
             InputStream stdout = process.getInputStream();
             InputStream stderr = process.getErrorStream();
 
-            OutputStreamWriter stdinWriter = new OutputStreamWriter(stdin);
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdin));
             BufferedReader error = new BufferedReader(new InputStreamReader(stderr));

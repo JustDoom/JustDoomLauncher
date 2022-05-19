@@ -63,7 +63,7 @@ public class ProjectFiles {
 
         File launcherJsonFile = createNewFile(filePath + "/launcher/launcher.json");
         List<JsonSetting> launcherJsonSettings = new ArrayList<>();
-        launcherJsonSettings.add(new JsonSetting("version", "", Config.VERSION, Boolean.class, true));
+        launcherJsonSettings.add(new JsonSetting("version", "", ConstantSettings.VERSION, String.class, true));
         launcherJsonSettings.add(new JsonSetting("update", "settings", true, Boolean.class));
         launcherJsonSettings.add(new JsonSetting("openConsole", "settings", true, Boolean.class));
 
