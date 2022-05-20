@@ -1,11 +1,13 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.process;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.InstallApplication;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.JsonFile;
 import javafx.application.Platform;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -19,7 +21,7 @@ public class DownloadProcess {
         this.path = path;
     }
 
-    public void download(JsonObject jsonObject) throws IOException {
+    public void download(JsonFile jsonFile) throws IOException {
         String filename = "file.jar";
 
         InstallApplication installApplication = new InstallApplication();
@@ -59,12 +61,8 @@ public class DownloadProcess {
             e.printStackTrace();
         }
 
-        jsonObject.addProperty("main", filename);
-
-        Writer writer = new FileWriter(path + "/data.json");
-        new Gson().toJson(jsonObject, writer);
-        writer.flush();
-        writer.close();
+        jsonFile.getSetting("main").setValue(filename);
+        jsonFile.save();
 
         Platform.runLater(installApplication::close);
     }

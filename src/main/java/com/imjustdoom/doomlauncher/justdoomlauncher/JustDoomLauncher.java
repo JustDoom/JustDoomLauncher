@@ -1,23 +1,22 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.imjustdoom.doomlauncher.justdoomlauncher.application.LauncherApplication;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.Config;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.ConstantSettings;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.JsonFile;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.ProjectFiles;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.setting.JsonSetting;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
-import com.imjustdoom.doomlauncher.justdoomlauncher.files.Config;
 import javafx.application.Application;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,22 +52,44 @@ public class JustDoomLauncher {
         // Load projects from files
         for (File dir : files.getFilePath().toFile().listFiles()) {
             if (!dir.isDirectory()) continue;
-
             for (File file : dir.listFiles()) {
-                if (file.getName().equals("data.json")) {
+                if(!file.getName().equals("data.json")) continue;
+
+                JsonFile jsonFile = new JsonFile(file);
+                jsonFile.getSettings().add(new JsonSetting("id", "", -1, Integer.class));
+                jsonFile.getSettings().add(new JsonSetting("name", "", "", String.class));
+                jsonFile.getSettings().add(new JsonSetting("version", "", "", String.class));
+                jsonFile.getSettings().add(new JsonSetting("description", "", "", String.class));
+                jsonFile.getSettings().add(new JsonSetting("imageBase64", "", "", String.class)); // TODO: get default imageBase64
+                jsonFile.getSettings().add(new JsonSetting("author", "", "", String.class));
+                jsonFile.getSettings().add(new JsonSetting("main", "", "", String.class));
+                jsonFile.getSettings().add(new JsonSetting("startup", "", "", String.class));
+
+                JsonReader reader = null;
+                try {
+                    reader = new JsonReader(new FileReader(file));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                JsonElement parser = new JsonParser().parse(reader);
+
+                if(parser.isJsonNull()) {
+                    jsonFile.setJson(new JsonObject());
                     try {
-                        JsonReader reader = new JsonReader(Files.newBufferedReader(file.toPath()));
-                        reader.setLenient(true);
-                        JsonObject jsonElement = new JsonParser().parse(reader).getAsJsonObject();
-
-                        this.projectFronts.get(jsonElement.getAsJsonObject().get("id").getAsInt()).setInstalled(true);
-
-                        this.projectFronts.get(jsonElement.getAsJsonObject().get("id").getAsInt()).setJson(jsonElement);
-                        this.projectFronts.get(jsonElement.getAsJsonObject().get("id").getAsInt()).setDirectory(dir.getAbsolutePath());
-                    } catch (Exception e) {
+                        jsonFile.save();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    jsonFile.setJson(parser.getAsJsonObject());
+                    jsonFile.load();
                 }
+
+                Project project = this.projectFronts.get(jsonFile.getSetting("id").getAsInteger());
+                project.setInstalled(true);
+                project.setFile(jsonFile);
+                project.setDirectory(dir.getAbsolutePath());
             }
         }
 

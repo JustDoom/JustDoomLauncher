@@ -10,7 +10,7 @@
     <name>JustDoomLauncher</name>
 
     <properties>
-        <projectFront.build.sourceEncoding>UTF-8</projectFront.build.sourceEncoding>
+        <projectTab.build.sourceEncoding>UTF-8</projectTab.build.sourceEncoding>
         <junit.version>5.8.1</junit.version>
     </properties>
 

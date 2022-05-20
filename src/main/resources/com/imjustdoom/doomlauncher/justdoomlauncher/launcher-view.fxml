@@ -16,7 +16,7 @@
             <Font size="34.0" />
          </font>
       </Label>
-      <Pane fx:id="projectFront" layoutX="229.0" layoutY="55.0" prefHeight="329.0" prefWidth="355.0">
+      <Pane fx:id="projectTab" layoutX="229.0" layoutY="55.0" prefHeight="329.0" prefWidth="355.0">
          <children>
             <Label fx:id="projectName" layoutX="54.0" layoutY="14.0" text="null" />
             <Label fx:id="projectVersion" layoutX="54.0" layoutY="31.0" text="null" />

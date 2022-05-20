@@ -1,6 +1,5 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.files;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -94,43 +93,31 @@ public class ProjectFiles {
     public void createDirectory(String directory, Project project) throws IOException {
 
         Path path = Paths.get(filePath.toString(), directory);
-        if (!path.toFile().exists()) {
-            path.toFile().mkdirs();
-        }
+        if (!path.toFile().exists()) path.toFile().mkdirs();
 
-        Path data = Path.of(path + "/data.json");
-        if (!Files.exists(data)) {
-            System.out.printf("Could not find %s, generating it for you...\n", "data.json");
-            InputStream stream = JustDoomLauncher.class.getResourceAsStream("/assets/" + "data.json");
-            assert stream != null;
-            Files.copy(stream, Path.of(path + "/data.json"));
-        }
+        File file = createNewFile(path + "/data.json");
+        JsonFile jsonFile = new JsonFile(file);
 
-        JsonReader reader = new JsonReader(Files.newBufferedReader(new File(path + "/data.json").toPath()));
-        reader.setLenient(true);
-        JsonObject jsonElement = new JsonParser().parse(reader).getAsJsonObject();
+        jsonFile.getSettings().add(new JsonSetting("id", "", project.getId(), Integer.class));
+        jsonFile.getSettings().add(new JsonSetting("name", "", project.getName(), String.class));
+        jsonFile.getSettings().add(new JsonSetting("version", "", project.getVersion(), String.class));
+        jsonFile.getSettings().add(new JsonSetting("imageBase64", "", "", String.class));
+        jsonFile.getSettings().add(new JsonSetting("description", "", project.getDescription(), String.class));
+        jsonFile.getSettings().add(new JsonSetting("author", "", project.getAuthor(), String.class));
+        jsonFile.getSettings().add(new JsonSetting("main", "", "", String.class));
 
-        jsonElement.getAsJsonObject().addProperty("id", project.getId());
-        jsonElement.getAsJsonObject().addProperty("name", project.getName());
-        jsonElement.getAsJsonObject().addProperty("version", project.getVersion());
-        jsonElement.getAsJsonObject().addProperty("description", project.getDescription());
-        jsonElement.getAsJsonObject().addProperty("author", project.getAuthor());
+        String startup;
         if (new File(JustDoomLauncher.INSTANCE.getFiles().mainFilePath + "\\jre\\bin\\java.exe").exists()) {
-            jsonElement.getAsJsonObject().addProperty("startup", "\""
-                    + JustDoomLauncher.INSTANCE.getFiles().getMainFilePath()
-                    + "\\jre\\bin\\java.exe\" -jar %file%");
+            startup = "\"ustDoomLauncher.INSTANCE.getFiles().getMainFilePath()" + "\\jre\\bin\\java.exe\" -jar %file%";
         } else {
-            jsonElement.getAsJsonObject().addProperty("startup", "java -jar %file%");
+            startup = "java -jar %file%";
         }
+        jsonFile.getSettings().add(new JsonSetting("startup", "", startup, String.class));
 
-        Writer writer = new FileWriter(path + "/data.json");
-        new Gson().toJson(jsonElement, writer);
-        writer.flush();
-        writer.close();
+        jsonFile.load();
 
         project.setInstalled(true);
-
-        project.setJson(jsonElement);
+        project.setFile(jsonFile);
         project.setDirectory(path.toAbsolutePath().toString());
 
         //jsonElement.getAsJsonObject().addProperty("imageBase64", project.getLogo());

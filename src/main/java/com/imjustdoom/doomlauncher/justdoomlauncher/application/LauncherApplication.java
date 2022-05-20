@@ -5,7 +5,7 @@ import com.imjustdoom.doomlauncher.justdoomlauncher.files.ConstantSettings;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.DownloadProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.process.GameProcess;
 import com.imjustdoom.doomlauncher.justdoomlauncher.project.Project;
-import com.imjustdoom.doomlauncher.justdoomlauncher.project.ProjectFront;
+import com.imjustdoom.doomlauncher.justdoomlauncher.project.ProjectTab;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.Config;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -52,7 +52,7 @@ public class LauncherApplication extends Application {
         // vBox.getChildren().clear();
         boolean notWhite = true;
         for(int id : JustDoomLauncher.INSTANCE.getProjects().keySet()) {
-            ProjectFront projectFront = JustDoomLauncher.INSTANCE.getProjects().get(id).getFront();
+            ProjectTab projectTab = JustDoomLauncher.INSTANCE.getProjects().get(id).getFront();
             AnchorPane projectPane = new AnchorPane();
 
             if(notWhite) projectPane.setStyle("-fx-background-color: #d3d3d3;");
@@ -60,17 +60,17 @@ public class LauncherApplication extends Application {
             projectPane.setPrefWidth(200);
             projectPane.setOnMouseClicked(this::onProjectClicked);
 
-            ImageView imageView = new ImageView(projectFront.getLogo().getAbsolutePath());
+            ImageView imageView = new ImageView(projectTab.getLogo().getAbsolutePath());
             imageView.setFitWidth(32);
             imageView.setFitHeight(32);
 
             projectPane.getChildren().add(imageView);
 
-            Label nameLabel = new Label(projectFront.getName());
+            Label nameLabel = new Label(projectTab.getName());
             nameLabel.setLayoutX(36);
             projectPane.getChildren().add(nameLabel);
 
-            Label versionLabel = new Label(projectFront.getVersion());
+            Label versionLabel = new Label(projectTab.getVersion());
             versionLabel.setLayoutX(36);
             versionLabel.setLayoutY(15);
 
@@ -140,8 +140,9 @@ public class LauncherApplication extends Application {
                 return;
             }
 
-            GameProcess gameProcess = new GameProcess(project.getJson().get("main").getAsString(),
-                    project.getJson().get("startup").getAsString(), project.getDirectory(), Config.Settings.OPEN_CONSOLE);
+            GameProcess gameProcess = new GameProcess(project.getFile().getSetting("main").getAsString(),
+                    project.getFile().getSetting("startup").getAsString(), project.getDirectory(),
+                    Config.Settings.OPEN_CONSOLE);
 
             JustDoomLauncher.INSTANCE.getGameProcesses().put(project.getId(), gameProcess);
             new Thread(gameProcess::run).start();
@@ -156,7 +157,7 @@ public class LauncherApplication extends Application {
                 DownloadProcess downloadProcess = new DownloadProcess(project.getDownloadUrl(), project.getDirectory());
                 new Thread(() -> {
                     try {
-                        downloadProcess.download(project.getJson());
+                        downloadProcess.download(project.getFile());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

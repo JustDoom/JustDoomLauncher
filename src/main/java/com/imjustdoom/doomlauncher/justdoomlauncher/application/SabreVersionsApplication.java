@@ -103,15 +103,15 @@ public class SabreVersionsApplication {
                     close();
                     new Thread(() -> {
                         try {
-                            downloadProcess.download(project.getJson());
+                            downloadProcess.download(project.getFile());
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            e.printStackTrace();
                         }
                     }).start();
 
                     project.setInstalled(true);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             });
             pane.getChildren().add(button);

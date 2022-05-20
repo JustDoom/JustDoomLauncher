@@ -2,14 +2,14 @@ package com.imjustdoom.doomlauncher.justdoomlauncher.project;
 
 import java.io.File;
 
-public class ProjectFront {
+public class ProjectTab {
 
     private int id;
     private String name;
     private File logo;
     private String version;
 
-    public ProjectFront(int id, String name, File logo, String version) {
+    public ProjectTab(int id, String name, File logo, String version) {
         this.name = name;
         this.logo = logo;
         this.version = version;

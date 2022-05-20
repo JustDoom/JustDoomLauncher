@@ -1,6 +1,6 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.project;
 
-import com.google.gson.JsonObject;
+import com.imjustdoom.doomlauncher.justdoomlauncher.files.JsonFile;
 
 import java.io.File;
 
@@ -15,11 +15,11 @@ public class Project {
     private String description;
     private File logo;
     private boolean installed;
-    private JsonObject json;
+    private JsonFile file;
     private String directory;
     private String downloadUrl;
 
-    private ProjectFront front;
+    private ProjectTab tab;
 
     public Project(int id, String name, String path, String type, String version, String author, String description,
                    File logo, String downloadUrl) {
@@ -34,7 +34,7 @@ public class Project {
         this.installed = false;
         this.downloadUrl = downloadUrl;
 
-        this.front = new ProjectFront(id, name, logo, version);
+        this.tab = new ProjectTab(id, name, logo, version);
     }
 
     public int getId() {
@@ -68,8 +68,8 @@ public class Project {
         return logo;
     }
 
-    public ProjectFront getFront() {
-        return front;
+    public ProjectTab getFront() {
+        return tab;
     }
 
     public boolean isInstalled() {
@@ -80,12 +80,12 @@ public class Project {
         this.installed = installed;
     }
 
-    public JsonObject getJson() {
-        return json;
+    public JsonFile getFile() {
+        return file;
     }
 
-    public void setJson(JsonObject json) {
-        this.json = json;
+    public void setFile(JsonFile file) {
+        this.file = file;
     }
 
     public String getDirectory() {

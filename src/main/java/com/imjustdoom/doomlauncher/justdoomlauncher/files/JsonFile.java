@@ -16,7 +16,6 @@ public class JsonFile {
     private File file;
     private JsonObject json;
     private List<JsonSetting> settings;
-    private List<JsonSetting> missingSettings = new ArrayList<>();
 
     public JsonFile(File file, List<JsonSetting> settings, JsonObject json) {
         this.file = file;
@@ -80,6 +79,7 @@ public class JsonFile {
 
     public void load() {
         JsonObject json = this.json.deepCopy();
+        List<JsonSetting> missingSettings = new ArrayList<>();
 
         SETTINGS:
         for (JsonSetting setting : this.settings) {
