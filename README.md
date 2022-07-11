@@ -1,5 +1,7 @@
 # JustDoomLauncher
 
+![Build Status](https://ci.imjustdoom.com/job/JustDoomLauncher/badge/icon)
+
 JustDoom Launcher is a custom launcher for my projects, 
 they will be kept up to date and you will be able to install 
 whichever version you want. The launcher is made with JavaFX and
