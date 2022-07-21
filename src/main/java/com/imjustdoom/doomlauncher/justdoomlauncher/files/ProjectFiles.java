@@ -77,7 +77,7 @@ public class ProjectFiles {
 
         JsonElement parser = new JsonParser().parse(reader);
 
-        if(parser.isJsonNull()) {
+        if (parser.isJsonNull()) {
             launcherJson.setJson(new JsonObject());
             try {
                 launcherJson.save();

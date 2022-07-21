@@ -51,11 +51,11 @@ public class LauncherApplication extends Application {
 
         // vBox.getChildren().clear();
         boolean notWhite = true;
-        for(int id : JustDoomLauncher.INSTANCE.getProjects().keySet()) {
+        for (int id : JustDoomLauncher.INSTANCE.getProjects().keySet()) {
             ProjectTab projectTab = JustDoomLauncher.INSTANCE.getProjects().get(id).getFront();
             AnchorPane projectPane = new AnchorPane();
 
-            if(notWhite) projectPane.setStyle("-fx-background-color: #d3d3d3;");
+            if (notWhite) projectPane.setStyle("-fx-background-color: #d3d3d3;");
             notWhite = !notWhite;
             projectPane.setPrefWidth(200);
             projectPane.setOnMouseClicked(this::onProjectClicked);
@@ -93,7 +93,7 @@ public class LauncherApplication extends Application {
         loadProjectInfo(JustDoomLauncher.INSTANCE.getProjects().get(1));
 
         new Thread(() -> {
-            if(!JustDoomLauncher.INSTANCE.getFiles().getLauncherFile().getSetting("update").getAsBoolean()) return;
+            if (!JustDoomLauncher.INSTANCE.getFiles().getLauncherFile().getSetting("update").getAsBoolean()) return;
             boolean uptoDate = JustDoomLauncher.INSTANCE.checkLauncherUptoDate();
             if (!uptoDate) {
                 Platform.runLater(() -> {
@@ -127,13 +127,13 @@ public class LauncherApplication extends Application {
     }
 
     public void onInstallClick(MouseEvent event) {
-        if(selectedProject == -1) {
+        if (selectedProject == -1) {
             return;
         }
         Project project = JustDoomLauncher.INSTANCE.getProjects().get(this.selectedProject);
 
-        if(project.isInstalled()) {
-            if(JustDoomLauncher.INSTANCE.getGameProcesses().containsKey(project.getId())) {
+        if (project.isInstalled()) {
+            if (JustDoomLauncher.INSTANCE.getGameProcesses().containsKey(project.getId())) {
                 JustDoomLauncher.INSTANCE.getGameProcesses().get(project.getId()).kill();
                 JustDoomLauncher.INSTANCE.getGameProcesses().remove(project.getId());
                 loadProjectInfo(project);
@@ -148,7 +148,7 @@ public class LauncherApplication extends Application {
             new Thread(gameProcess::run).start();
         } else {
             try {
-                if(project.getId() == 2) {
+                if (project.getId() == 2) {
                     SabreVersionsApplication sabreVersionsApplication = new SabreVersionsApplication();
                     sabreVersionsApplication.start(project);
                     return;
@@ -174,17 +174,17 @@ public class LauncherApplication extends Application {
     }
 
     public void onUninstallClick(MouseEvent event) {
-        if(selectedProject == -1) {
+        if (selectedProject == -1) {
             return;
         }
         Project project = JustDoomLauncher.INSTANCE.getProjects().get(this.selectedProject);
 
-        if(project.isInstalled()) {
+        if (project.isInstalled()) {
             try {
                 //BackupProcess backupProcess = new BackupProcess(Path.of(project.getDirectory()));
                 //backupProcess.backup();
 
-                if(JustDoomLauncher.INSTANCE.getGameProcesses().containsKey(project.getId())) {
+                if (JustDoomLauncher.INSTANCE.getGameProcesses().containsKey(project.getId())) {
                     JustDoomLauncher.INSTANCE.getGameProcesses().get(project.getId()).kill();
                 }
                 JustDoomLauncher.INSTANCE.getFiles().deleteDirectory(project.getName());
@@ -208,7 +208,7 @@ public class LauncherApplication extends Application {
         imageView.setFitWidth(32);
         imageView.setFitHeight(32);
 
-        if(JustDoomLauncher.INSTANCE.getGameProcesses().containsKey(project.getId())) {
+        if (JustDoomLauncher.INSTANCE.getGameProcesses().containsKey(project.getId())) {
             ((Button) scene.lookup("#projectButton")).setText("Kill");
         } else if (project.isInstalled()) {
             ((Button) scene.lookup("#projectButton")).setText("Play");

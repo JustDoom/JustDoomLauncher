@@ -2,20 +2,19 @@ package com.imjustdoom.doomlauncher.justdoomlauncher.application;
 
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
 public class RestartApplication {
+
+    private String WINDOW_NAME = "Restarting";
+    private int WIDTH = 200, HEIGHT = 100;
 
     private Button restart, later;
     private Stage stage;
@@ -33,11 +32,11 @@ public class RestartApplication {
     public void start() throws IOException {
 
         stage = new Stage();
-        stage.setTitle("Restart");
+        stage.setTitle(WINDOW_NAME);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(LauncherApplication.primaryStage);
 
-        Scene scene = new Scene(fxmlLoader, 200, 100);
+        Scene scene = new Scene(fxmlLoader, WIDTH, HEIGHT);
         stage.setScene(scene);
         stage.show();
 

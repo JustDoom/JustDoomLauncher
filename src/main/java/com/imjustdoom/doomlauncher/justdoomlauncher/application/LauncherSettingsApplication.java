@@ -1,7 +1,6 @@
 package com.imjustdoom.doomlauncher.justdoomlauncher.application;
 
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
-import com.imjustdoom.doomlauncher.justdoomlauncher.files.Config;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.JsonFile;
 import com.imjustdoom.doomlauncher.justdoomlauncher.files.setting.JsonSetting;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +49,7 @@ public class LauncherSettingsApplication {
         ((CheckBox) scene.lookup("#update")).setOnAction(event -> {
             CheckBox checkBox = (CheckBox) event.getSource();
             JsonSetting setting = json.getSetting("update").copy();
-            if(changedSettings.contains(setting)) {
+            if (changedSettings.contains(setting)) {
                 System.out.println("remove");
                 changedSettings.remove(setting);
                 return;
@@ -63,7 +62,7 @@ public class LauncherSettingsApplication {
         ((CheckBox) scene.lookup("#console")).setOnAction(event -> {
             CheckBox checkBox = (CheckBox) event.getSource();
             JsonSetting setting = json.getSetting("openConsole").copy();
-            if(changedSettings.contains(setting)) {
+            if (changedSettings.contains(setting)) {
                 changedSettings.remove(setting);
                 return;
             }
@@ -73,8 +72,8 @@ public class LauncherSettingsApplication {
 
         ((Button) scene.lookup("#save")).setOnAction(event -> {
             try {
-                for(JsonSetting setting : json.getSettings()) {
-                    for(JsonSetting setting1 : changedSettings) {
+                for (JsonSetting setting : json.getSettings()) {
+                    for (JsonSetting setting1 : changedSettings) {
                         if (setting.isSetting(setting1)) {
                             setting.setValue(setting1.getValue());
                             setting.setUpdated(true);

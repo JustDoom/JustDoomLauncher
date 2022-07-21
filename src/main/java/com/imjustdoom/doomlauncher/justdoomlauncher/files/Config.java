@@ -10,7 +10,7 @@ import java.io.Writer;
 
 public class Config {
 
-    public class Settings {
+    public static class Settings {
         public static boolean DEBUG = false;
         public static boolean AUTO_UPDATE = true;
         public static boolean OPEN_CONSOLE = true;
@@ -19,7 +19,6 @@ public class Config {
     public static void init() {
         JsonFile json = JustDoomLauncher.INSTANCE.getFiles().getLauncherFile();
 
-        System.out.println(json == null);
         Settings.AUTO_UPDATE = json.getSetting("update").getAsBoolean();
         Settings.OPEN_CONSOLE = json.getSetting("openConsole").getAsBoolean();
     }
@@ -34,7 +33,7 @@ public class Config {
     public static void setSetting(String key, String value, JsonObject json, boolean save) {
         json.get("settings").getAsJsonObject().addProperty(key, value);
 
-        if(!save) return;
+        if (!save) return;
         try {
             saveConfig(json);
         } catch (IOException e) {

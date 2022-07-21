@@ -61,10 +61,7 @@ public class ConsoleApplication {
             return url;
         }
         url = ConsoleApplication.class.getResource(styleSheetName);
-        if (url != null) {
-            return url;
-        }
-        return null;
+        return url;
     }
 
     public void setTitle(final String title) {

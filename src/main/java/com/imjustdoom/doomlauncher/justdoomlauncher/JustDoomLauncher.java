@@ -53,7 +53,7 @@ public class JustDoomLauncher {
         for (File dir : files.getFilePath().toFile().listFiles()) {
             if (!dir.isDirectory()) continue;
             for (File file : dir.listFiles()) {
-                if(!file.getName().equals("data.json")) continue;
+                if (!file.getName().equals("data.json")) continue;
 
                 JsonFile jsonFile = new JsonFile(file);
                 jsonFile.getSettings().add(new JsonSetting("id", "", -1, Integer.class));
@@ -74,7 +74,7 @@ public class JustDoomLauncher {
 
                 JsonElement parser = new JsonParser().parse(reader);
 
-                if(parser.isJsonNull()) {
+                if (parser.isJsonNull()) {
                     jsonFile.setJson(new JsonObject());
                     try {
                         jsonFile.save();

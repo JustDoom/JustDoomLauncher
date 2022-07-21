@@ -52,7 +52,7 @@ public class GameProcess {
             DataOutputStream dataOutputStream = new DataOutputStream(stdin);
 
             ConsoleApplication consoleApplication = new ConsoleApplication();
-            if(JustDoomLauncher.INSTANCE.getFiles().getLauncherFile().getSetting("openConsole").getAsBoolean()) {
+            if (JustDoomLauncher.INSTANCE.getFiles().getLauncherFile().getSetting("openConsole").getAsBoolean()) {
                 new Thread(() -> Platform.runLater(() -> {
                     try {
                         consoleApplication.start(dataOutputStream);
@@ -128,7 +128,7 @@ public class GameProcess {
                 stringBuilder.append(line).append("\n");
                 application.addText(line + "\n");
             }
-            if(stringBuilder.toString().equals("")) return;
+            if (stringBuilder.toString().equals("")) return;
             error(stringBuilder.toString());
         }
     }

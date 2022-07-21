@@ -54,12 +54,12 @@ public class JsonFile {
         Writer writer = new FileWriter(file);
 
         JsonObject json = this.json.deepCopy();
-        for(JsonSetting setting : this.settings) {
+        for (JsonSetting setting : this.settings) {
 
             JsonObject tmpJson = json;
             for (String elmt : setting.getPath().split("\\.")) {
-                if(elmt == null || elmt.equals("")) continue;
-                if(tmpJson.has(elmt)) tmpJson = tmpJson.get(elmt).getAsJsonObject();
+                if (elmt == null || elmt.equals("")) continue;
+                if (tmpJson.has(elmt)) tmpJson = tmpJson.get(elmt).getAsJsonObject();
                 else {
                     tmpJson.add(elmt, new JsonObject());
                     tmpJson = tmpJson.get(elmt).getAsJsonObject();
@@ -86,15 +86,15 @@ public class JsonFile {
 
             JsonObject tmpJson = json.deepCopy();
             for (String elmt : setting.getPath().split("\\.")) {
-                if(elmt == null || elmt.equals("")) continue;
-                if(tmpJson.has(elmt)) tmpJson = tmpJson.get(elmt).getAsJsonObject();
+                if (elmt == null || elmt.equals("")) continue;
+                if (tmpJson.has(elmt)) tmpJson = tmpJson.get(elmt).getAsJsonObject();
                 else {
                     missingSettings.add(setting);
                     continue SETTINGS;
                 }
             }
 
-            if(tmpJson.get(setting.getKey()) == null) {
+            if (tmpJson.get(setting.getKey()) == null) {
                 missingSettings.add(setting);
                 continue;
             }

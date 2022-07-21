@@ -18,7 +18,7 @@ public class UpdateLauncherProcess {
         InstallApplication installApplication = new InstallApplication();
         RestartApplication restartApplication = new RestartApplication();
 
-        new Thread(() -> Platform.runLater(() ->{
+        new Thread(() -> Platform.runLater(() -> {
             try {
                 installApplication.start();
             } catch (IOException e) {

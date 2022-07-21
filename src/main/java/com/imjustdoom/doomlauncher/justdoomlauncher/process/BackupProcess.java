@@ -2,7 +2,6 @@ package com.imjustdoom.doomlauncher.justdoomlauncher.process;
 
 import com.imjustdoom.doomlauncher.justdoomlauncher.JustDoomLauncher;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -17,7 +16,7 @@ public class BackupProcess {
 
     private Path[] backupPaths;
 
-    public BackupProcess(Path ... path) {
+    public BackupProcess(Path... path) {
         this.backupPaths = path;
     }
 

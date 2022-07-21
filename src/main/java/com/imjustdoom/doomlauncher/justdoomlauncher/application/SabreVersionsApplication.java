@@ -62,11 +62,11 @@ public class SabreVersionsApplication {
         JsonArray jsonElement = new JsonParser().parse(reader).getAsJsonArray();
 
         boolean notWhite = true;
-        for(JsonElement element : jsonElement.getAsJsonArray()) {
+        for (JsonElement element : jsonElement.getAsJsonArray()) {
             int id = element.getAsJsonObject().get("id").getAsInt();
 
             AnchorPane pane = new AnchorPane();
-            if(notWhite) pane.setStyle("-fx-background-color: #d3d3d3;");
+            if (notWhite) pane.setStyle("-fx-background-color: #d3d3d3;");
             notWhite = !notWhite;
             pane.setPrefWidth(versions.getPrefWidth());
             pane.setPrefHeight(200);
