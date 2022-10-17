@@ -8,5 +8,6 @@
       <ProgressBar fx:id="bar" layoutY="41.0" prefWidth="200.0" progress="0.0" />
       <Label fx:id="percentage" layoutX="86.0" layoutY="42.0" text="0.00%" />
       <Label layoutX="72.0" layoutY="14.0" text="Installing..." />
+      <Button fx:id="cancel" layoutX="76.0" layoutY="67.0" mnemonicParsing="false" text="Cancel" />
    </children>
 </Pane>

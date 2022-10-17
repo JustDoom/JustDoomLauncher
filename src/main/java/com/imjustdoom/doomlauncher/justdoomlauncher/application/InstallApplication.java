@@ -50,6 +50,11 @@ public class InstallApplication {
         percentage.setText(String.format("%.2f", progress * 100) + "%");
     }
 
+    public void cancelInstall() {
+        Stage stage = (Stage) progressBar.getScene().getWindow();
+        stage.close();
+    }
+
     public ProgressBar getProgressBar() {
         return progressBar;
     }
