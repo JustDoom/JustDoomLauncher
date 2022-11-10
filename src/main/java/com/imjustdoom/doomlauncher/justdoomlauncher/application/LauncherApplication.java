@@ -60,7 +60,7 @@ public class LauncherApplication extends Application {
             projectPane.setPrefWidth(200);
             projectPane.setOnMouseClicked(this::onProjectClicked);
 
-            ImageView imageView = new ImageView(projectTab.getLogo().getAbsolutePath());
+            ImageView imageView = new ImageView(new Image(projectTab.getLogo().toURI().toString()));
             imageView.setFitWidth(32);
             imageView.setFitHeight(32);
 
@@ -204,7 +204,7 @@ public class LauncherApplication extends Application {
         ((Label) scene.lookup("#projectVersion")).setText(project.getVersion());
         ((TextArea) scene.lookup("#projectDescription")).setText(project.getDescription());
         ImageView imageView = ((ImageView) scene.lookup("#projectLogo"));
-        imageView.setImage(new Image(project.getLogo().getAbsolutePath()));
+        imageView.setImage(new Image(project.getLogo().toURI().toString()));
         imageView.setFitWidth(32);
         imageView.setFitHeight(32);
 
