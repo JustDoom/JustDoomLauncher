@@ -46,7 +46,7 @@ public class JsonFile {
         return null;
     }
 
-    public List<JsonSetting> getSettings() {
+    public List<JsonSetting> getSettings() { // TODO: can i not just use a hashmap with the setting name as the key? or even an enum
         return settings;
     }
 
