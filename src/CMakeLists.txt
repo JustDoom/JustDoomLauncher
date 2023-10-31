@@ -1,0 +1,2 @@
+add_executable(JustDoomLauncher main.cpp)
+target_link_libraries(JustDoomLauncher PRIVATE sfml-graphics)
